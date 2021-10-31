@@ -1,7 +1,15 @@
 import classes from './Overlay.module.css';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../store/cart';
 
 const OverLay = (props) => {
-	return <div className={classes.overlay}></div>;
+	const dispatch = useDispatch();
+
+	const closeCartHandler = () => {
+		dispatch(cartActions.hideCart());
+	};
+
+	return <div onClick={closeCartHandler} className={classes.overlay}></div>;
 };
 
 export default OverLay;
