@@ -6,7 +6,7 @@ import { cartActions } from '../../store/cart';
 const MainHeader = (props) => {
 	const dispatch = useDispatch();
 	const cartClickHandler = () => {
-		dispatch(cartActions.showCart());
+		dispatch(cartActions.toggleCart());
 	};
 
 	return (

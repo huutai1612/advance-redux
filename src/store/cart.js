@@ -4,11 +4,8 @@ const cartSlice = createSlice({
 	name: 'cart',
 	initialState: { isShow: false },
 	reducers: {
-		showCart(state) {
-			state.isShow = true;
-		},
-		hideCart(state) {
-			state.isShow = false;
+		toggleCart(state) {
+			state.isShow = !state.isShow;
 		},
 	},
 });

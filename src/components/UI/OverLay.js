@@ -6,7 +6,7 @@ const OverLay = (props) => {
 	const dispatch = useDispatch();
 
 	const closeCartHandler = () => {
-		dispatch(cartActions.hideCart());
+		dispatch(cartActions.toggleCart());
 	};
 
 	return <div onClick={closeCartHandler} className={classes.overlay}></div>;
