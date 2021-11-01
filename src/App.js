@@ -2,7 +2,8 @@ import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
-import { cartActions } from './store/cart';
+// import { cartActions } from './store/cart';
+import { sendCartData } from './store/cartItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 
@@ -15,50 +16,52 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const sendCartData = async () => {
-			if (isInitial) {
-				isInitial = false;
-				return;
-			}
+		if (isInitial) {
+			isInitial = false;
+			return;
+		}
 
-			dispatch(
-				cartActions.showNotification({
-					status: 'Pending...',
-					title: 'Sending...',
-					message: 'Sending cart data',
-				}),
-			);
+		dispatch(sendCartData(selectedCart));
+		// const sendCartData = async () => {
 
-			const response = await fetch(
-				`https://react-redux-1088a-default-rtdb.firebaseio.com/cart.json`,
-				{
-					method: 'PUT',
-					body: JSON.stringify(selectedCart),
-				},
-			);
+		// dispatch(
+		// 	cartActions.showNotification({
+		// 		status: 'Pending...',
+		// 		title: 'Sending...',
+		// 		message: 'Sending cart data',
+		// 	}),
+		// );
 
-			if (!response.ok) {
-				throw new Error('Having some issue when trying to send cart data');
-			}
+		// const response = await fetch(
+		// 	`https://react-redux-1088a-default-rtdb.firebaseio.com/cart.json`,
+		// 	{
+		// 		method: 'PUT',
+		// 		body: JSON.stringify(selectedCart),
+		// 	},
+		// );
 
-			dispatch(
-				cartActions.showNotification({
-					status: 'success',
-					title: 'Success',
-					message: 'Sent cart data successfully',
-				}),
-			);
-		};
+		// if (!response.ok) {
+		// 	throw new Error('Having some issue when trying to send cart data');
+		// }
 
-		sendCartData().catch((error) => {
-			dispatch(
-				cartActions.showNotification({
-					status: 'error',
-					title: 'Error',
-					message: 'Error when sending cart data',
-				}),
-			);
-		});
+		// dispatch(
+		// 	cartActions.showNotification({
+		// 		status: 'success',
+		// 		title: 'Success',
+		// 		message: 'Sent cart data successfully',
+		// 	}),
+		// );
+		// };
+
+		// sendCartData().catch((error) => {
+		// 	dispatch(
+		// 		cartActions.showNotification({
+		// 			status: 'error',
+		// 			title: 'Error',
+		// 			message: 'Error when sending cart data',
+		// 		}),
+		// 	);
+		// });
 	}, [selectedCart, dispatch]);
 
 	return (
