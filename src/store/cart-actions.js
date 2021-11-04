@@ -69,7 +69,8 @@ export const fetchCartData = () => {
 			const cartData = await fetchData();
 			dispatch(
 				cartItemAction.setCartData({
-					item: cartData.item,
+					// where we can put a logic in here if cartData.item is undefined we can set an empty array
+					item: cartData.item || [],
 					totalAmount: cartData.totalAmount,
 				}),
 			);

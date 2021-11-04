@@ -57,11 +57,7 @@ const cartItemSlice = createSlice({
 			}
 		},
 		setCartData(state, action) {
-			if (!action.payload.item) {
-				state.item = [];
-			} else {
-				state.item = action.payload.item;
-			}
+			state.item = action.payload.item;
 			state.totalAmount = action.payload.totalAmount;
 		},
 	},
