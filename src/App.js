@@ -3,7 +3,7 @@ import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
 // import { cartActions } from './store/cart';
-import { sendCartData } from './store/cartItem';
+import { sendCartData, fetchCartData } from './store/cart-actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 
@@ -16,12 +16,17 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		dispatch(fetchCartData());
+	}, [dispatch]);
+
+	useEffect(() => {
 		if (isInitial) {
 			isInitial = false;
 			return;
 		}
-
-		dispatch(sendCartData(selectedCart));
+		if (selectedCart.changed) {
+			dispatch(sendCartData(selectedCart));
+		}
 		// const sendCartData = async () => {
 
 		// dispatch(

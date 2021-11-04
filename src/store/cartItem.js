@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { cartActions } from './cart';
 
 const initialState = {
 	item: [],
 	totalAmount: 0,
+	changed: false,
 };
 
 const cartItemSlice = createSlice({
@@ -11,6 +11,7 @@ const cartItemSlice = createSlice({
 	initialState,
 	reducers: {
 		addItem(state, action) {
+			state.changed = true;
 			// const oldState = current(state).item;
 			// const indexOfArray = oldState.findIndex(
 			// 	(item) => item.id === action.payload.id,
@@ -33,6 +34,7 @@ const cartItemSlice = createSlice({
 			}
 		},
 		removeItem(state, action) {
+			state.changed = true;
 			// const oldState = current(state).item;
 			// const indexOfArray = oldState.findIndex(
 			// 	(item) => item.id === action.payload,
@@ -54,57 +56,16 @@ const cartItemSlice = createSlice({
 				existItem.quantity--;
 			}
 		},
+		setCartData(state, action) {
+			if (!action.payload.item) {
+				state.item = [];
+			} else {
+				state.item = action.payload.item;
+			}
+			state.totalAmount = action.payload.totalAmount;
+		},
 	},
 });
-
-// This is how we can create action creator is supported by redux to handling our async logic to help us make our component more cleaner
-
-export const sendCartData = (cart) => {
-	//This function will receive our cart data
-	//dispatch is auto accept if we use dispatch this function this is the method redux support for our create action creator thunk
-	return async (dispatch) => {
-		// In this return function it will automatically receive dispatch as parameter
-		dispatch(
-			cartActions.showNotification({
-				status: 'Pending...',
-				title: 'Sending...',
-				message: 'Sending cart data',
-			}),
-		);
-
-		const sendRequest = async () => {
-			const response = await fetch(
-				`https://react-redux-1088a-default-rtdb.firebaseio.com/cart.json`,
-				{
-					method: 'PUT',
-					body: JSON.stringify(cart),
-				},
-			);
-			if (!response.ok) {
-				throw new Error('Having some issue when trying to send cart data');
-			}
-		};
-		try {
-			sendRequest();
-
-			dispatch(
-				cartActions.showNotification({
-					status: 'success',
-					title: 'Success',
-					message: 'Sent cart data successfully',
-				}),
-			);
-		} catch (error) {
-			dispatch(
-				cartActions.showNotification({
-					status: 'error',
-					title: 'Error',
-					message: 'Error when sending cart data',
-				}),
-			);
-		}
-	};
-};
 
 export const { reducer: cartItemReducer, actions: cartItemAction } =
 	cartItemSlice;
